@@ -14,7 +14,7 @@ asaPass = 'nope'
 host = 'A.B.C.D'
 port = '443'
 
-url = f"https://{host}:{port}/api/interfaces/physical"
+url = f"https://{host}:{port}/api/interfaces/physical/GigabitEthernet0_API_SLASH_0"
 
 headers = {
     "User-Agent": "REST API Agent",
@@ -24,4 +24,14 @@ headers = {
 
 restApiResponse = requests.get(url, headers=headers, auth = (asaUser, asaPass), verify=False).json()
 
-pprint(json.dumps(restApiResponse, indent=2, sort_keys=True))
+# Debug full json output
+#pprint(json.dumps(restApiResponse, indent=2, sort_keys=True))
+
+asaNameif = restApiResponse["name"]
+asaInterfaceIpType = restApiResponse["ipAddress"]["kind"]
+asaInterfaceIpAddress = restApiResponse["ipAddress"]["ip"]["value"]
+asaInterfaceNetMask = restApiResponse["ipAddress"]["netMask"]["value"]
+
+concatResult = f"Interface: {asaNameif}\nIP Type: {asaInterfaceIpType}\nIP Address: {asaInterfaceIpAddress}\nSubnet Mask: {asaInterfaceNetMask}"
+
+print(concatResult)
